@@ -7,12 +7,23 @@ import { useState } from 'react'
 import { useAuth } from '../../hooks/auth'
 
 export function Profile() {
-  const { user } = useAuth()
+  const { user, updateProfile } = useAuth()
 
   const [name, setName] = useState(user.name)
   const [email, setEmail] = useState(user.email)
   const [passwordOld, setPasswordOld] = useState()
   const [passwordNew, setpasswordNew] = useState()
+
+  async function handleUpdate() {
+    const user = {
+      name,
+      email,
+      password: passwordNew,
+      old_password: passwordOld,
+    }
+
+    await updateProfile({ user })
+  }
 
   return (
     <Container>
@@ -57,7 +68,7 @@ export function Profile() {
           icon={FiLock}
           onChange={(e) => setpasswordNew(e.target.value)}
         />
-        <Button title="Salvar" />
+        <Button title="Salvar" onClick={handleUpdate} />
       </Form>
     </Container>
   )
